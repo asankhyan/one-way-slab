@@ -5,12 +5,15 @@ import { astAtSupport } from "../area-tension-steel/area-tension-steel.component
 import { factoredShear } from "../factored-moment/factored-moment.component";
 import FormInput from "../form-components/form-input/form-input.component";
 
-let normalShearStress= (combinedinput)=>{
+export const normalShearStress= (combinedinput)=>{
     // (D45*1000)/(C9*(C8-C10))
     const {b, d, effective_cover} = combinedinput;
     let d45 = factoredShear(combinedinput) 
     let res = (d45 * 1000)/(b * (d - effective_cover));
-    return roundOfDecimal(res,6); 
+    
+    if(isNaN(res)) return "";
+    
+    return roundOfDecimal(res,6);
 }
 
 let fxn_pt = (combinedinput)=>{
@@ -18,19 +21,36 @@ let fxn_pt = (combinedinput)=>{
     const {b, d, effective_cover, ast} = combinedinput;
     let d36 = astAtSupport(ast) 
     let res = (d36 * 100)/(b * (d - effective_cover));
+    
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res, 3); 
 }
 
-let CheckForShear = ({handleChange, inputData, designLoads, ast, checkShear})=>{
-    const combinedinput = {...inputData, ...designLoads, ...ast, ...checkShear};
-    const {permissible_stress} = checkShear;
+export const fxn_permissibleStress = ({inputData, designLoads, ast})=>{
+    const combinedinput = {...inputData, ...designLoads, ...ast};
+    
+    let fck = combinedinput.fck;
+    let pt = fxn_pt({...inputData, ast});
+    let fckByPt = ((0.8*fck)/(6.89 * pt));
+    fckByPt = (fckByPt>1) ? fckByPt : 1;
+
+    let res = 0.85 * Math.sqrt(0.8*fck) * (Math.sqrt(1 + 5 * fckByPt)-1)/(6 * fckByPt);
+
+    if(isNaN(res)) return "";
+    
+    return roundOfDecimal(res);
+}
+
+let CheckForShear = ({inputData, designLoads, ast})=>{
+    const combinedinput = {...inputData, ...designLoads, ...ast};
     return(
         <div className='check-for-shear'>
             <FormInput label='Vu' value={factoredShear(combinedinput)} subHeading='kn' readOnly />
             <FormInput label='nominal shear stress' value={normalShearStress(combinedinput)} subHeading='N/mm2' readOnly />
             <FormInput label='pt' value={fxn_pt({...inputData, ast})} subHeading='%' readOnly />
             <FormInput label='permissible stresses' name='permissible_stress' 
-                value={permissible_stress} subHeading='mm2' handleChange={handleChange} />
+                value={fxn_permissibleStress({inputData, designLoads, ast})} subHeading='mm2' readOnly />
         </div>
     );
 }
@@ -38,8 +58,7 @@ let CheckForShear = ({handleChange, inputData, designLoads, ast, checkShear})=>{
 let mapStateToProps = (state)=>({
     inputData: state.inputData,
     designLoads: state.designLoads,
-    ast: state.ast,
-    checkShear: state.checkShear
+    ast: state.ast
 })
 
 let mapDispatchToProps = (dispatch)=>({

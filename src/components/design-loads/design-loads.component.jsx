@@ -8,12 +8,18 @@ import './design-loads.styles.scss'
 export const selfweight_of_slab = (d)=>{
   //=(D16+D17+D18)*1.5
   let res = (25 * d / 1000);
+
+  if(isNaN(res)) return "";
+  
   return roundOfDecimal(res);
 }
 
 export const designLoad = (d, live_load, extra_dead_load)=>{
   //=(D16+D17+D18)*1.5
   let res = (parseFloat(selfweight_of_slab(d)) + parseFloat(live_load) + parseFloat(extra_dead_load)) * 1.5;
+  
+  if(isNaN(res)) return "";
+    
   return roundOfDecimal(res, 3);
 }
 

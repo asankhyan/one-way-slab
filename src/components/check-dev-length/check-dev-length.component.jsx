@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import { handleDevLengthChange } from "../../redux/check-dev-length/check-dev-length.actions";
+import { roundOfDecimal } from "../../utils/number.utils";
 import { astAtSupport } from "../area-tension-steel/area-tension-steel.component";
 import { factoredShear } from "../factored-moment/factored-moment.component"
 import FormInput from "../form-components/form-input/form-input.component"
@@ -8,19 +9,48 @@ import FormSelect from "../form-components/form-select/form-select.component";
 let fxn_mu1 = ({fy, d, b, effective_cover, ast})=>{
     // 0.87*C7*(C8-C10)*D36*(1-((D36*C7)/(C9*(C8-C10)*20)))
     let _d36 = astAtSupport(ast);
-    return 0.87 * fy * (d - effective_cover)* _d36 * (1-((_d36* fy)/(b*(d-effective_cover)*20)))
+    let res = 0.87 * fy * (d - effective_cover)* _d36 * (1-((_d36* fy)/(b*(d-effective_cover)*20)))
+    
+    if(isNaN(res)) return "";
+    
+    return roundOfDecimal(res);
 }
 
 let fxn_vu = ({clear_span, d,live_load, extra_dead_load})=>{
     // D23*1000
-    return factoredShear({clear_span, d,live_load, extra_dead_load})* 1000;
+    let res = factoredShear({clear_span, d,live_load, extra_dead_load})* 1000;
+    if(isNaN(res)) return "";
+    return roundOfDecimal(res);
 }
 
 let fxn_ld = ({fy, ast,m})=>{
     // (D31*0.87*C7)/(4*E63)
     let _d31 = ast.bar_dia;
     console.log({fy, ast,m});
-    return (_d31 * 0.87 * fy)/(4 * m)
+    let res = (_d31 * 0.87 * fy)/(4 * m)
+    if(isNaN(res)) return "";
+    return roundOfDecimal(res);
+}
+
+export const isDevLengthValidUsingNoHooks = ({inputData, designLoads, checkDevLength, ast}) =>{
+    let {no_hooks_Lo, m} = checkDevLength;
+    let _mu1 = fxn_mu1({...inputData, ast});
+    let _vu = fxn_vu({...inputData, ...designLoads});
+    let _ld = fxn_ld({...inputData, ast,m});
+
+    let res = ((_mu1/_vu)+no_hooks_Lo) > _ld
+
+    return res;
+}
+
+export const isDevLengthValid = ({inputData, designLoads, checkDevLength, ast}) =>{
+    let {m} = checkDevLength;
+    let _mu1 = fxn_mu1({...inputData, ast});
+    let _vu = fxn_vu({...inputData, ...designLoads});
+    let _ld = fxn_ld({...inputData, ast,m});
+    let _lo = 8 * ast.bar_dia;
+    let res = ((_mu1/_vu)+_lo) > _ld
+    return res;
 }
 
 let CheckDevLength = ({handleChange, inputData, designLoads, checkDevLength, ast})=>{

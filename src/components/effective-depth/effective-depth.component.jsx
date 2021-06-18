@@ -10,27 +10,39 @@ let ru = ({fy, fck})=>{
     //0.36*C6*D26*(1-(0.42*D26))
     let d26 = max_d(fy);
     let res = (0.36 * fck * d26 * (1 - (0.42*d26)));
+    
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res);
 }
 
-let required_d = (input)=>{
+export const required_d = (input)=>{
     // SQRT((D22*1000000)/(D27*C9))
     const {fy, fck, b} = input;
     let d22 = factoredMoment(input);
     let d27 = ru({fy, fck});
     let res = Math.sqrt((d22 * 1000000)/(d27 * b));
-    return roundOfDecimal(res)
+
+    if(isNaN(res)) return "";
+    
+    return roundOfDecimal(res);
 }
 
 let fxn_a = ({fck, fy, d, b, effective_cover})=>{
     // (0.87*(C8-C10)*C7*C7)/(C6*C9*(C8-C10))
     let res = (0.87*(d-effective_cover)*fy*fy)/(fck*b*(d-effective_cover));
+    
+    if(isNaN(res)) return "";
+    
     return res;
 }
 
 let fxn_b = ({fy, d, effective_cover})=>{
     // -(0.87*(C8-C10)*C7)
     let res = -(0.87*(d-effective_cover)*fy);
+    
+    if(isNaN(res)) return "";
+    
     return res;
 }
 
@@ -38,6 +50,9 @@ let fxn_c = (input)=>{
     // D22*1000000
     let d22 = factoredMoment(input);
     let res = d22 * 1000000;
+    
+    if(isNaN(res)) return "";
+    
     return res;
 }
 
@@ -49,6 +64,9 @@ export const quadraticEq = (input, neg)=>{
     //(-P26+(SQRT((P26*P26)-(4*P25*P27))))/(2*P25)
     
     let res = (-_b + (neg?-1:1) * (Math.sqrt((_b*_b)-(4*_a*_c))))/(2 * _a);
+    
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res, 3);;
 }
 

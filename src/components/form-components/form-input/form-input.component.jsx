@@ -8,7 +8,7 @@ let FormInput = ({label, handleChange, subHeading, ...otherInputAttrs})=>{
                 ? (<label className={`${otherInputAttrs.value?"shrink":""} input-label`}>{label}</label>) 
                 : null
             }
-            <input className="form-input"
+            <input className="form-input" autoComplete="off"
                 onChange = {handleChange}
                 {...otherInputAttrs}/>
             {

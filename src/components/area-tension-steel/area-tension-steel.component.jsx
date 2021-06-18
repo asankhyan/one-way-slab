@@ -16,16 +16,25 @@ export const spacingReq = (combinedinput)=>{
     let d30 = areaOfTensionSteel(combinedinput);
     let d31 = combinedinput.bar_dia;
     let res = (1000 * ((3.14/4)*d31*d31))/d30;
+
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res);
 }
 
 export const providedSteel = ({bar_dia, spacing_provided})=>{
     let res = (1000 * ((3.14/4)*bar_dia*bar_dia))/spacing_provided;
+    
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res);
 }
 
 export const astAtSupport = ({bar_dia, spacing_provided})=>{
     let res = providedSteel({bar_dia, spacing_provided})/2;
+    
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res, 3);
 }
 

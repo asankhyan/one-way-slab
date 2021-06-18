@@ -2,7 +2,7 @@ import { CHECK_DEV_LEN_ACTION_TYPES } from "./check-dev-length.actions";
 
 let init_state = {
     no_hooks_Lo: "",
-    m:"",
+    m:"30",
     m_options:[
         {displayValue:"20", code:1.92},
         {displayValue:"25", code:2.24},

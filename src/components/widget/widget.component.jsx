@@ -1,8 +1,8 @@
 import './widget.styles.scss'
 
-let Widget = ({title, children})=>{
+let Widget = ({title, className, children})=>{
     return(
-        <div className='widget'>
+        <div className={`widget ${className}`}>
             <h3>{title}</h3>
             <div className="widget-content">
                 {children}

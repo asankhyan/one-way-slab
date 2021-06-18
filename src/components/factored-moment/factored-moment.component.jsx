@@ -10,6 +10,9 @@ export const factoredMoment = ({d, clear_span, effective_cover, support_width,li
   let D12 = centre_to_centre_spacing(clear_span, support_width);
   let D13 = clear_span_eff_depth(clear_span, d , effective_cover);
   let res = D19 *  Math.pow((D13>D12?D13:D12), 2) / 8;
+  
+  if(isNaN(res)) return "";
+    
   return roundOfDecimal(res, 3);
 }
 
@@ -17,6 +20,9 @@ export const factoredShear = ({clear_span, d,live_load, extra_dead_load})=>{
   //=D19*C4/2
   let D19 = designLoad(d,live_load, extra_dead_load);
   let res = (D19 * parseFloat(clear_span))/ 2;
+  
+  if(isNaN(res)) return "";
+    
   return roundOfDecimal(res, 3);
 }
 

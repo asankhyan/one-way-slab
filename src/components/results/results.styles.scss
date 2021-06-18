@@ -1,0 +1,35 @@
+.results{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap:20px;
+
+    .status-button{
+        text-align: center;
+        position: relative;
+        padding: 25px;
+        border: 1px solid;
+        border-radius: 15px;
+        color: white;
+        font-weight: bold;
+        overflow: hidden;
+        &.success{
+            background-color: green;
+        }
+        &.error{
+            background-color: #f71616e0;
+        }
+        h3{
+            padding-left: 12px;
+            position: absolute;
+            top: -12px;
+            left: 0;
+            font-size: 12px;
+            width: 100%;
+            text-align: left;
+            background: #0b4b82e8;
+        }
+    }
+    @media screen and (max-width: 720px){
+        grid-template-columns: 1fr 1fr;
+    }
+}

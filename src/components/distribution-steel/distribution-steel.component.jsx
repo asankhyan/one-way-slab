@@ -1,26 +1,35 @@
 import { connect } from "react-redux";
 import { handleDistSteelDataChange } from "../../redux/dist-steel/dist-steel.actions";
 import { roundOfDecimal } from "../../utils/number.utils";
-import { quadraticEq } from "../effective-depth/effective-depth.component"
 import FormInput from "../form-components/form-input/form-input.component"
 
 import './distribution-steel.styles.scss'
 
-let distributionSteel = (combinedinput)=>{
-    let pos = quadraticEq(combinedinput);
-    let neg = quadraticEq(combinedinput, true);
-    return Math.min(pos, neg);
-}
-
-export const spacingReq = (combinedinput)=>{
-    let d30 = distributionSteel(combinedinput);
-    let d31 = combinedinput.bar_dia;
-    let res = (1000 * ((3.14/4)*d31*d31))/d30;
+export const distributionSteel = (input)=>{
+    // 0.12*C9*C8/100
+    const {d, b} = input;
+    let res = 0.12 * b * d / 100
+    
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res);
 }
 
-let providedSteel = ({bar_dia, spacing_provided})=>{
+export const spacingReq = (input)=>{
+    let d30 = distributionSteel(input);
+    let d31 = input.bar_dia;
+    let res = (1000 * ((3.14/4)*d31*d31))/d30;
+    
+    if(isNaN(res)) return "";
+    
+    return roundOfDecimal(res);
+}
+
+export const providedDistSteel = ({bar_dia, spacing_provided})=>{
     let res = (1000 * ((3.14/4)*bar_dia*bar_dia))/spacing_provided;
+
+    if(isNaN(res)) return "";
+    
     return roundOfDecimal(res);
 }
 
@@ -33,7 +42,7 @@ let DistributionSteel = ({handleChange, inputData, designLoads, distSteel})=>{
             <FormInput label='bar dia' value={bar_dia} subHeading='mm' name='bar_dia' handleChange={handleChange} />
             {/* <FormInput label='spacing required' value={spacingReq(combinedinput)} subHeading='mm' readOnly /> */}
             <FormInput label='spacing provided' value={spacing_provided} name='spacing_provided' subHeading='mm'  handleChange={handleChange} />
-            <FormInput label='provided steel' value={providedSteel({bar_dia, spacing_provided})} subHeading='mm2' readOnly />
+            <FormInput label='provided steel' value={providedDistSteel({bar_dia, spacing_provided})} subHeading='mm2' readOnly />
         </div>
     )
 }
