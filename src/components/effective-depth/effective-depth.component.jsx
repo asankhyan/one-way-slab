@@ -3,20 +3,22 @@ import { roundOfDecimal } from "../../utils/number.utils";
 import { factoredMoment } from "../factored-moment/factored-moment.component";
 import FormInput from "../form-components/form-input/form-input.component"
 
-let max_d = ({fy})=>{
+import './effective-depth.styles.scss'
+
+let max_d = (fy)=>{
     return parseFloat(fy)===500?0.46:0.48;
 }
-let ru = ({fy, fck})=>{
+let ru = ({fy, fck}, roundoff)=>{
     //0.36*C6*D26*(1-(0.42*D26))
     let d26 = max_d(fy);
     let res = (0.36 * fck * d26 * (1 - (0.42*d26)));
     
     if(isNaN(res)) return "";
     
-    return roundOfDecimal(res);
+    return roundoff?roundOfDecimal(res, 2):res;
 }
 
-export const required_d = (input)=>{
+export const required_d = (input, roundoff)=>{
     // SQRT((D22*1000000)/(D27*C9))
     const {fy, fck, b} = input;
     let d22 = factoredMoment(input);
@@ -25,7 +27,7 @@ export const required_d = (input)=>{
 
     if(isNaN(res)) return "";
     
-    return roundOfDecimal(res);
+    return roundoff?roundOfDecimal(res, 2):res;
 }
 
 let fxn_a = ({fck, fy, d, b, effective_cover})=>{
@@ -56,7 +58,7 @@ let fxn_c = (input)=>{
     return res;
 }
 
-export const quadraticEq = (input, neg)=>{
+export const quadraticEq = (input, neg, roundoff)=>{
     const {fck, fy, d, b, effective_cover} = input;
     let _a = fxn_a({fck, fy, d, b, effective_cover});
     let _b = fxn_b({fy, d, effective_cover});
@@ -67,7 +69,7 @@ export const quadraticEq = (input, neg)=>{
     
     if(isNaN(res)) return "";
     
-    return roundOfDecimal(res, 3);;
+    return roundoff?roundOfDecimal(res, 5):res;
 }
 
 let EffectiveDepth = ({inputData, designLoads})=>{
@@ -75,18 +77,21 @@ let EffectiveDepth = ({inputData, designLoads})=>{
     return(
         <div className='eff-depth'>
             <div>
-                <FormInput label='Xu max/d' value={max_d(inputData)} readOnly/>
-                <FormInput label='Ru' value={ru(inputData)} readOnly/>
-                <FormInput label='required d' value={required_d(combinedinput)} subHeading='mm' readOnly/>
+                <FormInput label='Xu max/d' value={max_d(inputData.fy)} readOnly/>
+                <FormInput label='Ru' value={ru(inputData, true)} readOnly/>
+                <FormInput label='required d' value={required_d(combinedinput, true)} subHeading='mm' readOnly/>
             </div>
-            <div>
-                <FormInput label='a' value={fxn_a(inputData)} readOnly/>
-                <FormInput label='b' value={fxn_b(inputData)} readOnly/>
-                <FormInput label='c' value={fxn_c(combinedinput)} readOnly/>
-                <div className='quadratic-eq'>
-                    <label>Quadratic Eq</label>
-                    <FormInput value={quadraticEq(combinedinput)} readOnly/>
-                    <FormInput value={quadraticEq(combinedinput, true)} readOnly/>
+            <div className="quadratic-eq">
+                <h4>Quadratic Eq</h4>
+                <div className="quadratic-eq-in">
+                    <FormInput label='a' value={fxn_a(inputData)} readOnly/>
+                    <FormInput label='b' value={fxn_b(inputData)} readOnly/>
+                    <FormInput label='c' value={fxn_c(combinedinput)} readOnly/>
+                </div>
+                <div className='quadratic-eq-res'>
+                    <h4>Results</h4>
+                    <FormInput value={quadraticEq(combinedinput, false, true)} readOnly/>
+                    <FormInput value={quadraticEq(combinedinput, true, true)} readOnly/>
                 </div>
             </div>
         </div>

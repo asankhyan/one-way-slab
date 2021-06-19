@@ -3,7 +3,6 @@ import { handleDeflectionChange } from "../../redux/check-deflection/check-defle
 import { roundOfDecimal } from "../../utils/number.utils";
 import { areaOfTensionSteel, providedSteel } from "../area-tension-steel/area-tension-steel.component"
 import FormInput from "../form-components/form-input/form-input.component"
-import FormSelect from "../form-components/form-select/form-select.component";
 import { clear_span_eff_depth } from "../spacing-depth/spacing-depth.component";
 
 let requiredPt = (combinedinput)=>{
@@ -54,8 +53,8 @@ let fxn_mod_mft = (_mod_fs, _providedPt)=>{
     return res;
 }
 
-let fxn_mod_fs = ({mod_fac_fy, _requiredPt, _providedPt})=>{
-    let res = 0.58 * mod_fac_fy *_requiredPt / _providedPt;
+let fxn_mod_fs = ({fy, _requiredPt, _providedPt})=>{
+    let res = 0.58 * fy *_requiredPt / _providedPt;
 
     if(isNaN(res)) return "";
     
@@ -64,10 +63,10 @@ let fxn_mod_fs = ({mod_fac_fy, _requiredPt, _providedPt})=>{
 
 export const fxn_max_ld = ({inputData, designLoads, ast, checkDeflection})=>{
     const combinedinput = {...inputData, ...designLoads, ...ast};
-    const {mod_fac_fy} = checkDeflection;
+    const {fy} = inputData;
     let _requiredPt = requiredPt(combinedinput);
     let _providedPt = providedPt({...inputData, ast});
-    let _mod_fs = fxn_mod_fs({mod_fac_fy, _requiredPt, _providedPt})
+    let _mod_fs = fxn_mod_fs({fy, _requiredPt, _providedPt})
     let res = 20 * fxn_mod_mft(_mod_fs, _providedPt);
     
     if(isNaN(res)) return "";
@@ -75,14 +74,26 @@ export const fxn_max_ld = ({inputData, designLoads, ast, checkDeflection})=>{
     return roundOfDecimal(res)
 }
 
+export const isDeflectionValid = (props)=>{
+    let idaCd = {...props.inputData, ...props.designLoads, ...props.ast, ...props.CheckForDeflection};
+    
+    let checkForDeflectionStatus =  false;
+    let _max_ld = parseFloat(fxn_max_ld(props));
+    let _providedLd = parseFloat(providedLd(idaCd));
+    if(!isNaN(_max_ld) && !isNaN(_providedLd)){
+        checkForDeflectionStatus = _providedLd < _max_ld;
+    }
 
-let CheckForDeflection = ({handleChange, inputData, designLoads, ast, checkDeflection})=>{
+    return checkForDeflectionStatus;
+}
+
+
+let CheckForDeflection = ({inputData, designLoads, ast})=>{
     const combinedinput = {...inputData, ...designLoads, ...ast};
-    const {mod_fac_fy} = checkDeflection;
-    let options = [215, 225, 240, 250, 330, 340, 350, 415, 500];
+    const {fy} = inputData;
     let _requiredPt = requiredPt(combinedinput);
     let _providedPt = providedPt({...inputData, ast});
-    let _mod_fs = fxn_mod_fs({mod_fac_fy, _requiredPt, _providedPt})
+    let _mod_fs = fxn_mod_fs({fy, _requiredPt, _providedPt})
     let _mod_mft = fxn_mod_mft(_mod_fs, _providedPt);
     return(
         <div className="check-for-deflection">
@@ -116,7 +127,7 @@ let CheckForDeflection = ({handleChange, inputData, designLoads, ast, checkDefle
                     </thead>
                     <tbody>
                         <tr>
-                            <td><FormSelect options={options} value={mod_fac_fy} name='mod_fac_fy' handleChange={handleChange}/></td>
+                            <td>{fy}</td>
                             <td>{_mod_fs}</td>
                             <td>{_requiredPt}</td>
                             <td>{_providedPt}</td>
@@ -133,8 +144,7 @@ let CheckForDeflection = ({handleChange, inputData, designLoads, ast, checkDefle
 const mapStateToProps = (state)=>({
     inputData: state.inputData,
     designLoads: state.designLoads,
-    ast: state.ast,
-    checkDeflection: state.checkDeflection
+    ast: state.ast
 })
 
 const mapDispatchToProps = dispatch=>({

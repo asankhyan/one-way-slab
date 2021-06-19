@@ -4,7 +4,7 @@ import { designLoad } from "../design-loads/design-loads.component";
 import FormInput from "../form-components/form-input/form-input.component";
 import { centre_to_centre_spacing, clear_span_eff_depth } from "../spacing-depth/spacing-depth.component";
 
-export const factoredMoment = ({d, clear_span, effective_cover, support_width,live_load, extra_dead_load})=>{
+export const factoredMoment = ({d, clear_span, effective_cover, support_width,live_load, extra_dead_load}, roundoff)=>{
   //=(D19*POWER(MAX(D12:D13),2))/8
   let D19 = designLoad(d, live_load, extra_dead_load);
   let D12 = centre_to_centre_spacing(clear_span, support_width);
@@ -13,17 +13,17 @@ export const factoredMoment = ({d, clear_span, effective_cover, support_width,li
   
   if(isNaN(res)) return "";
     
-  return roundOfDecimal(res, 3);
+  return roundoff?roundOfDecimal(res, 3):res;
 }
 
-export const factoredShear = ({clear_span, d,live_load, extra_dead_load})=>{
+export const factoredShear = ({clear_span, d,live_load, extra_dead_load}, roundoff)=>{
   //=D19*C4/2
   let D19 = designLoad(d,live_load, extra_dead_load);
   let res = (D19 * parseFloat(clear_span))/ 2;
   
   if(isNaN(res)) return "";
     
-  return roundOfDecimal(res, 3);
+  return roundoff?roundOfDecimal(res, 3):res;
 }
 
 let FactoredMoments = ({inputData, designLoads})=>{
@@ -31,10 +31,10 @@ let FactoredMoments = ({inputData, designLoads})=>{
       <div className="factored-moment">
         <FormInput label='factored moment, Mu'
           subHeading="kn/m" readOnly
-          value={factoredMoment({...inputData, ...designLoads})}/>
+          value={roundOfDecimal(factoredMoment({...inputData, ...designLoads}), true)}/>
         <FormInput label='factored shear force, Vu'
           subHeading="kn" readOnly
-          value={factoredShear({...inputData, ...designLoads})}/>
+          value={roundOfDecimal(factoredShear({...inputData, ...designLoads}),true)}/>
       </div>
   );
 }

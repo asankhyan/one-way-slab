@@ -18,7 +18,8 @@
         &.error{
             background-color: #f71616e0;
         }
-        h3{
+        
+        .title{
             padding-left: 12px;
             position: absolute;
             top: -12px;
@@ -27,6 +28,7 @@
             width: 100%;
             text-align: left;
             background: #0b4b82e8;
+            color: white;
         }
     }
     @media screen and (max-width: 720px){

@@ -1,23 +1,39 @@
-.App{
-    display: grid;
-    grid-template-columns: 1fr 3fr;
+.app-container{
+    width: 96%;
+    margin: auto;
 
-    .level2{
-        .level3{
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-        }
+    h3, h4{
+        color: #0a477b;
     }
-    @media screen and (max-width: 720px){
-        grid-template-columns: 1fr;
+
+    .App{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+
+
         .level2{
             .level3{
-                grid-template-columns: 1fr;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                @media screen and (max-width: 720px){
+                    grid-template-columns: 1fr;
+                }
             }
+        }
+        @media screen and (max-width: 720px){
+            grid-template-columns: 1fr;
+        }
+
+    }
+    .app-detailed-view{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+
+        @media screen and (max-width: 720px){
+            grid-template-columns: 1fr;
         }
     }
 }
-
 
 .form-group{
     position: relative;

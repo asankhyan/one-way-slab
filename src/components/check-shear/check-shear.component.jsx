@@ -42,6 +42,17 @@ export const fxn_permissibleStress = ({inputData, designLoads, ast})=>{
     return roundOfDecimal(res);
 }
 
+export const isShearValid = (props)=>{
+    let ida = {...props.inputData, ...props.designLoads, ...props.ast};
+    let checkForShearStatus = false;
+    let _normalShearStress = parseFloat(normalShearStress(ida));
+    let _permissibleStress = parseFloat(fxn_permissibleStress(props));
+    if(!isNaN(_normalShearStress) && !isNaN(_permissibleStress)){
+        checkForShearStatus = _permissibleStress > _normalShearStress;
+    }
+    return checkForShearStatus;
+}
+
 let CheckForShear = ({inputData, designLoads, ast})=>{
     const combinedinput = {...inputData, ...designLoads, ...ast};
     return(

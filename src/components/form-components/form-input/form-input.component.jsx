@@ -5,7 +5,7 @@ let FormInput = ({label, handleChange, subHeading, ...otherInputAttrs})=>{
         <div className="form-group">
             {
                 label 
-                ? (<label className={`${otherInputAttrs.value?"shrink":""} input-label`}>{label}</label>) 
+                ? (<label className={`${otherInputAttrs.value || !isNaN(otherInputAttrs.value)?"shrink":""} input-label`}>{label}</label>) 
                 : null
             }
             <input className="form-input" autoComplete="off"

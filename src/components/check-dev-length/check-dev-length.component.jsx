@@ -26,7 +26,6 @@ let fxn_vu = ({clear_span, d,live_load, extra_dead_load})=>{
 let fxn_ld = ({fy, ast,m})=>{
     // (D31*0.87*C7)/(4*E63)
     let _d31 = ast.bar_dia;
-    console.log({fy, ast,m});
     let res = (_d31 * 0.87 * fy)/(4 * m)
     if(isNaN(res)) return "";
     return roundOfDecimal(res);
@@ -34,11 +33,14 @@ let fxn_ld = ({fy, ast,m})=>{
 
 export const isDevLengthValidUsingNoHooks = ({inputData, designLoads, checkDevLength, ast}) =>{
     let {no_hooks_Lo, m} = checkDevLength;
-    let _mu1 = fxn_mu1({...inputData, ast});
-    let _vu = fxn_vu({...inputData, ...designLoads});
-    let _ld = fxn_ld({...inputData, ast,m});
+    let _mu1 = parseFloat(fxn_mu1({...inputData, ast}));
+    let _vu = parseFloat(fxn_vu({...inputData, ...designLoads}));
+    let _ld = parseFloat(fxn_ld({...inputData, ast,m}));
 
-    let res = ((_mu1/_vu)+no_hooks_Lo) > _ld
+    let res = (_mu1/_vu)+no_hooks_Lo;
+    if(!isNaN(_ld) && !isNaN(res)){
+        res = res > _ld
+    }
 
     return res;
 }
@@ -49,7 +51,11 @@ export const isDevLengthValid = ({inputData, designLoads, checkDevLength, ast}) 
     let _vu = fxn_vu({...inputData, ...designLoads});
     let _ld = fxn_ld({...inputData, ast,m});
     let _lo = 8 * ast.bar_dia;
-    let res = ((_mu1/_vu)+_lo) > _ld
+    let res = ((_mu1/_vu)+_lo)
+    if(!isNaN(_ld) && !isNaN(res)){
+        res = res > _ld
+    }
+
     return res;
 }
 

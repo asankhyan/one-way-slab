@@ -33,6 +33,17 @@ export const providedDistSteel = ({bar_dia, spacing_provided})=>{
     return roundOfDecimal(res);
 }
 
+export const isDistSteelValid = ({inputData, designLoads, distSteel})=>{
+    let distSteelStatus =  false;
+    let _providedDistSteel = parseFloat(providedDistSteel(distSteel));
+    let _distributionSteel = parseFloat(distributionSteel(inputData));
+
+    if(!isNaN(_providedDistSteel) && !isNaN(_distributionSteel)){
+        distSteelStatus = _providedDistSteel > _distributionSteel;
+    }
+    return distSteelStatus;
+}
+
 let DistributionSteel = ({handleChange, inputData, designLoads, distSteel})=>{
     // const combinedinput = {...inputData, ...designLoads, ...distSteel};
     const {bar_dia, spacing_provided} = distSteel;

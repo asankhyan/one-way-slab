@@ -1,0 +1,30 @@
+.header{
+    padding: 30px 5px;
+    color: #0a477b;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+
+    @media screen and (max-width: 720px){
+        grid-template-columns: 1fr;
+    }
+
+    .app-title{
+        font-family: 'Big Shoulders Stencil Display', cursive;
+        font-size: 55px;
+        .sub-title{
+            font-size: 20px;
+            font-family: 'Dancing Script', cursive;
+        }
+        @media screen and (max-width: 720px){
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+    }
+    .top-menu-icons{
+        padding-right: 50px;
+        .react-icon{
+            float: right;
+        }
+    }
+}

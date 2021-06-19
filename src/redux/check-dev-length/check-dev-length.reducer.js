@@ -1,16 +1,7 @@
+import { INITIAL_STATE } from "../default-state";
 import { CHECK_DEV_LEN_ACTION_TYPES } from "./check-dev-length.actions";
 
-let init_state = {
-    no_hooks_Lo: "",
-    m:"30",
-    m_options:[
-        {displayValue:"20", code:1.92},
-        {displayValue:"25", code:2.24},
-        {displayValue:"30", code:2.4},
-        {displayValue:"35", code:2.72},
-        {displayValue:"40", code:3.04}
-    ]
-}
+let init_state = INITIAL_STATE.checkDevLength
 
 export const checkDevLengthReducer = (state = init_state, action)=>{
     const {type, payload} = action;

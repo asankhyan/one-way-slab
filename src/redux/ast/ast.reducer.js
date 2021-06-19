@@ -1,9 +1,7 @@
+import { INITIAL_STATE } from "../default-state";
 import { AST_DATA_ACTION_TYPES } from "./ast.actions";
 
-const init_state = {
-    bar_dia:"",
-    spacing_provided:""
-}
+const init_state = INITIAL_STATE.ast
 
 export const astReducer = (state=init_state, action)=>{
     const {type, payload}=action;

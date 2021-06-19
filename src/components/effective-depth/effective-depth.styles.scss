@@ -1,0 +1,14 @@
+.eff-depth{
+    .quadratic-eq{
+        .quadratic-eq-in, .quadratic-eq-res{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0 10px;
+            .form-group {
+                .form-input{
+                    padding: 0px;
+                }
+            }
+        }
+    }
+}

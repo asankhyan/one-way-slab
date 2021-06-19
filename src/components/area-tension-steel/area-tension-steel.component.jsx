@@ -38,6 +38,17 @@ export const astAtSupport = ({bar_dia, spacing_provided})=>{
     return roundOfDecimal(res, 3);
 }
 
+export const isAstValid = ({inputData, designLoads, ast})=>{
+    let ida = {...inputData, ...designLoads, ...ast};
+    let ast_Status =  false;
+    let _providedSteel = parseFloat(providedSteel(ast));
+    let _areaOfTensionSteel = parseFloat(areaOfTensionSteel(ida));
+    if(!isNaN(_providedSteel) && !isNaN(_areaOfTensionSteel)){
+        ast_Status = _providedSteel > _areaOfTensionSteel;
+    }
+    return ast_Status
+}
+
 let AreaOfTensionSteel = ({handleChange, inputData, designLoads, ast})=>{
     // const combinedinput = {...inputData, ...designLoads, ...ast};
     const {bar_dia, spacing_provided} = ast;

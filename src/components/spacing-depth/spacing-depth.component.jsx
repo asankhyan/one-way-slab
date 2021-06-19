@@ -17,7 +17,7 @@ export const clear_span_eff_depth = (clear_span, d , effective_cover)=>{
     
     if(isNaN(effDepth)) return "";
     
-    return roundOfDecimal(effDepth);
+    return roundOfDecimal(effDepth, 3);
 }
 
 let SpacingAndDepth = ({clear_span, support_width, d , effective_cover})=>{

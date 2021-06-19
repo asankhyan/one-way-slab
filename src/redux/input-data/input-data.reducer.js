@@ -1,14 +1,7 @@
+import { INITIAL_STATE } from "../default-state";
 import { INPUT_DATA_ACTION_TYPES } from "./input-data.actions";
 
-const init_state = {
-    clear_span:"",
-    support_width:"",
-    fck:"",
-    fy:"",
-    d:"",
-    b:"",
-    effective_cover:""
-}
+const init_state = INITIAL_STATE.inputData;
 
 export const inputDataReducer = (state=init_state, action)=>{
     const {type, payload}=action;
