@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { handleDistSteelDataChange } from "../../redux/dist-steel/dist-steel.actions";
 import { roundOfDecimal } from "../../utils/number.utils";
-import FormInput from "../form-components/form-input/form-input.component"
+import FormInput from "../common/form-input/form-input.component"
 
 import './distribution-steel.styles.scss'
 

@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { handleDesignLoadsDataChange } from "../../redux/design-loads/design-loads.actions";
 import { roundOfDecimal } from "../../utils/number.utils";
-import FormInput from "../form-components/form-input/form-input.component";
+import FormInput from "../common/form-input/form-input.component";
 
 import './design-loads.styles.scss'
 

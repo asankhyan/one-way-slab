@@ -7,7 +7,7 @@ import CheckForDeflection from './components/check-deflection/check-deflection.c
 import CheckDevLength from './components/check-dev-length/check-dev-length.component';
 import InputData from './components/input-data/input-data.component';
 import Widget from './components/widget/widget.component';
-import Header from './components/header/header.component'
+import Header from './components/common/header/header.component'
 import SpacingAndDepth from './components/spacing-depth/spacing-depth.component'
 import Results from './components/results/results.component';
 import EffectiveDepth from './components/effective-depth/effective-depth.component';
@@ -50,11 +50,11 @@ class App extends React.Component {
               <Widget title="Factored Moments">
                 <FactoredMoments/>
               </Widget>
-              <Widget title="Check For Shear">
-                <CheckForShear/>
-              </Widget>
               <Widget title="Effective Depth">
                 <EffectiveDepth/>
+              </Widget>
+              <Widget title="Check For Shear">
+                <CheckForShear/>
               </Widget>
               <Widget title="Check For Deflection">
                 <CheckForDeflection/>

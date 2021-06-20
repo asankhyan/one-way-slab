@@ -3,7 +3,7 @@ import { handleShearDataChange } from "../../redux/check-shear/check-shear.actio
 import { roundOfDecimal } from "../../utils/number.utils";
 import { astAtSupport } from "../area-tension-steel/area-tension-steel.component";
 import { factoredShear } from "../factored-moment/factored-moment.component";
-import FormInput from "../form-components/form-input/form-input.component";
+import FormInput from "../common/form-input/form-input.component";
 
 export const normalShearStress= (combinedinput)=>{
     // (D45*1000)/(C9*(C8-C10))

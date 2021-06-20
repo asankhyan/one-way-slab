@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { roundOfDecimal } from "../../utils/number.utils";
-import FormInput from "../form-components/form-input/form-input.component";
+import FormInput from "../common/form-input/form-input.component";
 
 export const centre_to_centre_spacing = (clear_span, support_width)=>{
     //=C4+C5

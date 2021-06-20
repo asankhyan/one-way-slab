@@ -6,10 +6,12 @@ import { distSteelReducer } from "./dist-steel/dist-steel.reducer";
 import { checkShearReducer } from "./check-shear/check-shear.reducer";
 import { checkDeflectionReducer } from "./check-deflection/check-deflection.reducer";
 import { checkDevLengthReducer } from "./check-dev-length/check-dev-length.reducer";
-import { configReducers } from "./configs/configs.reducer";
+import settingsReducer from "./settings/settings.reducer";
+import userReducer from "./user/user.redux";
 
 export default combineReducers ({
-    configs: configReducers,
+    user: userReducer,
+    configs: settingsReducer,
     inputData: inputDataReducer,
     designLoads: designLoadsReducer,
     ast: astReducer,

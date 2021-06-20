@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { roundOfDecimal } from "../../utils/number.utils";
 import { designLoad } from "../design-loads/design-loads.component";
-import FormInput from "../form-components/form-input/form-input.component";
+import FormInput from "../common/form-input/form-input.component";
 import { centre_to_centre_spacing, clear_span_eff_depth } from "../spacing-depth/spacing-depth.component";
 
 export const factoredMoment = ({d, clear_span, effective_cover, support_width,live_load, extra_dead_load}, roundoff)=>{

@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { roundOfDecimal } from "../../utils/number.utils";
 import { factoredMoment } from "../factored-moment/factored-moment.component";
-import FormInput from "../form-components/form-input/form-input.component"
+import FormInput from "../common/form-input/form-input.component"
 
 import './effective-depth.styles.scss'
 
@@ -72,7 +72,7 @@ export const quadraticEq = (input, neg, roundoff)=>{
     return roundoff?roundOfDecimal(res, 5):res;
 }
 
-let EffectiveDepth = ({inputData, designLoads})=>{
+let EffectiveDepth = ({inputData, designLoads, configs})=>{
     const combinedinput = {...inputData, ...designLoads};
     return(
         <div className='eff-depth'>
@@ -81,26 +81,33 @@ let EffectiveDepth = ({inputData, designLoads})=>{
                 <FormInput label='Ru' value={ru(inputData, true)} readOnly/>
                 <FormInput label='required d' value={required_d(combinedinput, true)} subHeading='mm' readOnly/>
             </div>
-            <div className="quadratic-eq">
-                <h4>Quadratic Eq</h4>
-                <div className="quadratic-eq-in">
-                    <FormInput label='a' value={fxn_a(inputData)} readOnly/>
-                    <FormInput label='b' value={fxn_b(inputData)} readOnly/>
-                    <FormInput label='c' value={fxn_c(combinedinput)} readOnly/>
-                </div>
-                <div className='quadratic-eq-res'>
-                    <h4>Results</h4>
-                    <FormInput value={quadraticEq(combinedinput, false, true)} readOnly/>
-                    <FormInput value={quadraticEq(combinedinput, true, true)} readOnly/>
-                </div>
-            </div>
+            {
+                configs.showQaudraticEq
+                ?(
+                    <div className="quadratic-eq">
+                        <h4>Quadratic Eq</h4>
+                        <div className="quadratic-eq-in">
+                            <FormInput label='a' value={fxn_a(inputData)} readOnly/>
+                            <FormInput label='b' value={fxn_b(inputData)} readOnly/>
+                            <FormInput label='c' value={fxn_c(combinedinput)} readOnly/>
+                        </div>
+                        <div className='quadratic-eq-res'>
+                            <h4>Results</h4>
+                            <FormInput value={quadraticEq(combinedinput, false, true)} readOnly/>
+                            <FormInput value={quadraticEq(combinedinput, true, true)} readOnly/>
+                        </div>
+                    </div>
+                )
+                :null
+            }
         </div>
     );
 }
 
 const mapStateToProps = (state)=>({
     inputData: state.inputData,
-    designLoads:state.designLoads
+    designLoads:state.designLoads,
+    configs:state.configs
   })
   
   export default connect(mapStateToProps)(EffectiveDepth)

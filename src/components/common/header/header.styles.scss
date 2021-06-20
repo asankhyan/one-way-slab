@@ -1,9 +1,6 @@
 .header{
     padding: 30px 5px;
     color: #0a477b;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: space-between;
 
     @media screen and (max-width: 720px){
         grid-template-columns: 1fr;
@@ -19,12 +16,6 @@
         @media screen and (max-width: 720px){
             display: grid;
             grid-template-columns: 1fr;
-        }
-    }
-    .top-menu-icons{
-        padding-right: 50px;
-        .react-icon{
-            float: right;
         }
     }
 }

@@ -1,6 +1,10 @@
 export const INITIAL_STATE = {
+    user:null,
     configs:{
-        detailedView:false
+        detailedView: false,
+        toggleSettings: false,
+        showQaudraticEq: false,
+        showMftRefTable: false
     },
     inputData : {
         clear_span:5.1,

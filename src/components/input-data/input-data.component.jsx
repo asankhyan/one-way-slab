@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { handleInputDataChange } from "../../redux/input-data/input-data.actions";
-import FormInput from "../form-components/form-input/form-input.component";
+import FormInput from "../common/form-input/form-input.component";
 
 import './input-data.styles.scss'
 

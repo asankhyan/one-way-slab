@@ -3,8 +3,8 @@ import { handleDevLengthChange } from "../../redux/check-dev-length/check-dev-le
 import { roundOfDecimal } from "../../utils/number.utils";
 import { astAtSupport } from "../area-tension-steel/area-tension-steel.component";
 import { factoredShear } from "../factored-moment/factored-moment.component"
-import FormInput from "../form-components/form-input/form-input.component"
-import FormSelect from "../form-components/form-select/form-select.component";
+import FormInput from "../common/form-input/form-input.component"
+import FormSelect from "../common/form-select/form-select.component";
 
 let fxn_mu1 = ({fy, d, b, effective_cover, ast})=>{
     // 0.87*C7*(C8-C10)*D36*(1-((D36*C7)/(C9*(C8-C10)*20)))

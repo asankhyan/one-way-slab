@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { handleDataChange } from "../../redux/ast/ast.actions";
 import { roundOfDecimal } from "../../utils/number.utils";
 import { quadraticEq } from "../effective-depth/effective-depth.component"
-import FormInput from "../form-components/form-input/form-input.component";
+import FormInput from "../common/form-input/form-input.component";
 
 import './area-tension-steel.styles.scss'
 

@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { handleDeflectionChange } from "../../redux/check-deflection/check-deflection.actions";
 import { roundOfDecimal } from "../../utils/number.utils";
 import { areaOfTensionSteel, providedSteel } from "../area-tension-steel/area-tension-steel.component"
-import FormInput from "../form-components/form-input/form-input.component"
+import FormInput from "../common/form-input/form-input.component"
 import { clear_span_eff_depth } from "../spacing-depth/spacing-depth.component";
 
 let requiredPt = (combinedinput)=>{
@@ -88,7 +88,7 @@ export const isDeflectionValid = (props)=>{
 }
 
 
-let CheckForDeflection = ({inputData, designLoads, ast})=>{
+let CheckForDeflection = ({inputData, designLoads, ast, configs})=>{
     const combinedinput = {...inputData, ...designLoads, ...ast};
     const {fy} = inputData;
     let _requiredPt = requiredPt(combinedinput);
@@ -101,41 +101,47 @@ let CheckForDeflection = ({inputData, designLoads, ast})=>{
             <FormInput label='provided pt' value={_providedPt} subHeading='N/mm2' readOnly />
             <FormInput label='max l/d' value={20*_mod_mft} subHeading='%' readOnly />
             <FormInput label='provided l/d' value={providedLd(combinedinput)} subHeading='mm2' readOnly />
-            <div className='mod-factor-for-tension'>
-                <table border='1'>
-                    <thead>
-                        <tr>
-                            <th colSpan='5'>Modification factor for tension reinforcement</th>
-                        </tr>
-                        <tr>
-                            <td colSpan='5'>Ref IS 456:2000 Fig 4</td>
-                        </tr>
-                        <tr>
-                            <td>fy</td>
-                            <td>fs</td>
-                            <td>pt req</td>
-                            <td>pt prov.</td>
-                            <td>MFt</td>
-                        </tr>
-                        <tr>
-                            <td>N/mm2</td>
-                            <td>N/mm2</td>
-                            <td>%</td>
-                            <td>%</td>
-                            <td>IS 456 Fig 4</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{fy}</td>
-                            <td>{_mod_fs}</td>
-                            <td>{_requiredPt}</td>
-                            <td>{_providedPt}</td>
-                            <td>{_mod_mft}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            {
+                configs.showMftRefTable
+                ?(
+                    <div className='mod-factor-for-tension'>
+                        <table border='1'>
+                            <thead>
+                                <tr>
+                                    <th colSpan='5'>Modification factor for tension reinforcement</th>
+                                </tr>
+                                <tr>
+                                    <td colSpan='5'>Ref IS 456:2000 Fig 4</td>
+                                </tr>
+                                <tr>
+                                    <td>fy</td>
+                                    <td>fs</td>
+                                    <td>pt req</td>
+                                    <td>pt prov.</td>
+                                    <td>MFt</td>
+                                </tr>
+                                <tr>
+                                    <td>N/mm2</td>
+                                    <td>N/mm2</td>
+                                    <td>%</td>
+                                    <td>%</td>
+                                    <td>IS 456 Fig 4</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{fy}</td>
+                                    <td>{_mod_fs}</td>
+                                    <td>{_requiredPt}</td>
+                                    <td>{_providedPt}</td>
+                                    <td>{_mod_mft}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                )
+                :null
+            }
         </div>
     )
 }
@@ -144,7 +150,8 @@ let CheckForDeflection = ({inputData, designLoads, ast})=>{
 const mapStateToProps = (state)=>({
     inputData: state.inputData,
     designLoads: state.designLoads,
-    ast: state.ast
+    ast: state.ast,
+    configs: state.configs
 })
 
 const mapDispatchToProps = dispatch=>({

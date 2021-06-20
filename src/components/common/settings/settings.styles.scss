@@ -1,0 +1,28 @@
+.settings{
+    float: right;
+    position: relative;
+    cursor: pointer;
+
+    .settings-submenu{
+        position: absolute;
+        width: 220px;
+        right: 0;
+        background: white;
+        padding: 5px 10px 5px 10px;
+        z-index: 999;
+        box-shadow: 0px 0px 10px 2px;
+
+        .setting-item{
+            cursor: pointer;
+            .label{
+                cursor: inherit;
+                float: right;
+                margin-top: 12px;
+            }
+        }
+    }
+    @media screen and (max-width: 720px) {
+        margin-top: -15px;
+        
+    }
+}
